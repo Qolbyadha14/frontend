@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home page";
 }
 
-<form>
+<form id="form-add">
   <div class="container">
       <div class="row">
         <div class="col">
@@ -77,59 +77,41 @@
 
  </form>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-    $('#btn_add').on('click', function (e) {
-        e.preventDefault();
+    function postData() {
+    const agreement_number = $('#agreement_number').val();
+    const bpkb_no = $('#bpkb_no').val();
+    const branch_id = $('#branch_id').val();
+    const bpkb_date = $('#bpkb_date').val();
+    const faktur_no = $('#faktur_no').val();
+    const faktur_date = $('#faktur_date').val();
+    const location_id = $('#location_id').find(":selected").val();
+    const police_no = $('#police_no').val();
+    const bpkb_date_in = $('#bpkb_date_in').val();
+    const data = {
+        "agreement_number" : agreement_number,
+        "bpkb_no": bpkb_no,
+        "branch_id": branch_id,
+        "bpkb_date": bpkb_date,
+        "faktur_no": faktur_no,
+        "faktur_date":faktur_date,
+        "location_id":location_id,
+        "police_no": police_no,
+        "bpkb_date_in":bpkb_date_in
+    }
 
-        const agreement_number = $('#agreement_number').val();
-        const bpkb_no = $('#bpkb_no').val();
-        const branch_id = $('#branch_id').val();
-        const bpkb_date = $('#bpkb_date').val();
-        const faktur_no = $('#faktur_no').val();
-        const faktur_date = $('#faktur_date').val();
-        const location_id = $('#location_id').find(":selected").val();
-        const police_no = $('#police_no').val();
-        const bpkb_date_in = $('#bpkb_date_in').val();
-var data= {
-                agreement_number: agreement_number,
-                bpkb_no: bpkb_no,
-                branch_id: branch_id,
-                bpkb_date: bpkb_date,
-                faktur_no: faktur_no,
-                faktur_date: faktur_date,
-                location_id: location_id,
-                police_no: police_no,
-                bpkb_date_in: bpkb_date_in
+    axios.post('https://localhost:7167/TransactionBpkp', data)
+        .then(res => { 
+            console.log(res);
+            $('#form-add')[0].reset();
 
-            }
-        console.log(data);
-        $.ajax({
-            url: 'https://localhost:7167/TransactionBpkp',
-            headers: { 'Content-Type': 'application/' },
-
-            type: 'POST',
-            dataType: "json",
-            data: {
-                transaction_bpkb: {                agreement_number: agreement_number,
-                bpkb_no: bpkb_no,
-                branch_id: branch_id,
-                bpkb_date: bpkb_date,
-                faktur_no: faktur_no,
-                faktur_date: faktur_date,
-                location_id: location_id,
-                police_no: police_no,
-                bpkb_date_in: bpkb_date_in}
-
-
-            },
-
-            success: function (result, jqXHR, textStatus) {
-                console.log(result)
-            },
-            error: function (xhr, textStatus) {
-                alert('gagal save');               
-            }
-        });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('something wrong error : '+ error.message);
     });
+}
+
 </script>
