@@ -1,0 +1,135 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<form>
+  <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label for="agreement_number" class="form-label">agreement_number</label>
+            <input type="text" class="form-control" id="agreement_number" required/>
+          </div>
+  
+          <div class="mb-3">
+            <label for="branch_id" class="form-label">branch id</label>
+            <input type="text" class="form-control" id="branch_id" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="bpkb_no" class="form-label">No. Bpkb</label>
+            <input type="text" class="form-control" id="bpkb_no" required>
+          </div>
+          <div class="mb-3">
+            <label for="bpkb_date_in" class="form-label">Tanggal Bpkb In</label>
+            <input type="date" class="form-control" id="bpkb_date_in" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="bpkb_date" class="form-label">Tanggal Bpkb</label>
+            <input type="date" class="form-control" id="bpkb_date" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="faktur_no" class="form-label">No. Faktur</label>
+            <input type="text" class="form-control" id="faktur_no" required>
+          </div>
+      </div>
+      <div class="col">  
+          <div class="mb-3">
+            <label for="faktur_date" class="form-label">tanggal faktur</label>
+            <input type="date" class="form-control" id="faktur_date" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="police_no" class="form-label">Nomor Polisi</label>
+            <input type="text" class="form-control" id="police_no" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="location_id" class="form-label">Lokasi Penyimpanan</label>
+            <select id="location_id" class="form-select" aria-label="Default select example" required> 
+                <option value="location1">One</option>
+                <option value="location2">Two</option>
+            </select>
+          </div>   
+      </div>
+      </div>
+  </div>
+
+
+  <div class="container">
+  <div class="row">
+        <div class="col">  
+          <div class="mb-3">
+                <button type="submit" class="btn btn-warning">cancel</button>
+          </div>
+        </div>
+        <div class="col">  
+          <div class="mb-3">
+                <button id="btn_add" type="button" class="btn btn-success">Submit</button>
+          </div>
+        </div>
+  </div>
+  </div>
+
+ </form>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+    $('#btn_add').on('click', function (e) {
+        e.preventDefault();
+
+        const agreement_number = $('#agreement_number').val();
+        const bpkb_no = $('#bpkb_no').val();
+        const branch_id = $('#branch_id').val();
+        const bpkb_date = $('#bpkb_date').val();
+        const faktur_no = $('#faktur_no').val();
+        const faktur_date = $('#faktur_date').val();
+        const location_id = $('#location_id').find(":selected").val();
+        const police_no = $('#police_no').val();
+        const bpkb_date_in = $('#bpkb_date_in').val();
+var data= {
+                agreement_number: agreement_number,
+                bpkb_no: bpkb_no,
+                branch_id: branch_id,
+                bpkb_date: bpkb_date,
+                faktur_no: faktur_no,
+                faktur_date: faktur_date,
+                location_id: location_id,
+                police_no: police_no,
+                bpkb_date_in: bpkb_date_in
+
+            }
+        console.log(data);
+        $.ajax({
+            url: 'https://localhost:7167/TransactionBpkp',
+            headers: { 'Content-Type': 'application/' },
+
+            type: 'POST',
+            dataType: "json",
+            data: {
+                transaction_bpkb: {                agreement_number: agreement_number,
+                bpkb_no: bpkb_no,
+                branch_id: branch_id,
+                bpkb_date: bpkb_date,
+                faktur_no: faktur_no,
+                faktur_date: faktur_date,
+                location_id: location_id,
+                police_no: police_no,
+                bpkb_date_in: bpkb_date_in}
+
+
+            },
+
+            success: function (result, jqXHR, textStatus) {
+                console.log(result)
+            },
+            error: function (xhr, textStatus) {
+                alert('gagal save');               
+            }
+        });
+    });
+</script>
